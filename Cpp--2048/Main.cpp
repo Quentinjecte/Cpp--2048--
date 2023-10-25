@@ -5,7 +5,9 @@
 #include "../Cpp--2048/board.hpp"
 #include "../Cpp--2048/tile.hpp"
 #include <conio.h>
+#include <ctime>
 #include <cstdlib>
+#include <string>
 
 // Value of input
 #define KEY_UP 72
@@ -13,6 +15,10 @@
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 #define KEY_X 1
+
+int MaxN = 0;
+int Rn;
+std::string Rl;
 
 //Function move tile with keyboard
 int main()
@@ -25,7 +31,8 @@ int main()
     {
         for (int j = 0; j < 4; j++)
         {
-            std::cout << "/--/";
+            Random;
+            std::cout << "/" << Rl <<"/";
         }
         std::cout << "\n";
     }
@@ -57,4 +64,22 @@ int main()
         }
     }
     return 0;
+}
+
+
+void Random(int Rt)
+{
+    std::cout << "moi";
+    Rt = (rand() % 2);
+    if (Rt == 1)
+    {
+        if (MaxN < 2) {
+            Rn = (rand() % 2);
+            if (Rn == 1) Rl = "A";
+            else Rl = "B";
+            MaxN += 1;
+        }
+        else Rl = "--";
+    }
+
 }
