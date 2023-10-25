@@ -1,9 +1,10 @@
 // Cpp--Console--2048.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
 //
 
-/*#include <iostream>
-#include "../Cpp--2048/board.hpp"
-#include "../Cpp--2048/tile.hpp"
+
+#include <iostream>
+#include "./board.hpp"
+#include "./tile.hpp"
 #include <conio.h>
 #include <ctime>
 #include <cstdlib>
@@ -22,7 +23,8 @@ std::string Rl;
 
 
 
-/*void Random(int Rt)
+/*
+void Random(int Rt)
 {
     std::cout << "moi";
     Rt = (rand() % 2);
@@ -36,53 +38,46 @@ std::string Rl;
         }
         else Rl = "--";
     }
-}/*
+}
+*/
 
-
-#include <iostream>
-#include "./board.hpp"
-#include "./tile.hpp"
 
 int main()
 {
-    // Values and utilities
-    int boardSize[] = { 4, 4 };
-    Board board(boardSize);
-
-    int coord1[] = { 1, 1 };
-    Tile test1(2, coord1);
-    /*int coord2[] = {2, 3};
-    Tile test2(8, coord2);*/
-    int coord3[] = { 1, 4 };
-    Tile test3(4, coord3);
-
-    Tile::peek();
-    board.drawBoard();
-
-    std::cout << "Does a action \n\n";
-
-    char key = _getch();
-    int value = key;
-
-    while (value != KEY_X)
+    while (true)
     {
-        switch (_getch())
+        // Values and utilities
+        int boardSize[] = { 4, 4 };
+        Board board(boardSize);
+        board.spawnTiles();
+
+        Tile::peek();
+        board.drawBoard();
+
+        std::cout << "Does a action \n\n";
+
+        char key = _getch();
+        int value = key;
+
+        while (value != KEY_X)
         {
-        case KEY_DOWN:
-            std::cout << "KeyDown \n\n";
-            break;
-        case KEY_UP:
-            std::cout << "KeyUp \n\n";
-            break;
-        case KEY_LEFT:
-            std::cout << "KeyLeft \n\n";
-            break;
-        case KEY_RIGHT:
-            std::cout << "KeyRight \n\n";
+            switch (_getch())
+            {
+            case KEY_DOWN:
+                std::cout << "KeyDown \n\n";
+                break;
+            case KEY_UP:
+                std::cout << "KeyUp \n\n";
+                break;
+            case KEY_LEFT:
+                std::cout << "KeyLeft \n\n";
+                break;
+            case KEY_RIGHT:
+                std::cout << "KeyRight \n\n";
+                break;
+            }
             break;
         }
+        return 0;
     }
-    return 0;
-
-    return 0;
 }

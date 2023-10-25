@@ -29,7 +29,8 @@ Board::~Board()
 void Board::spawnTiles()
 {
     std::cout << "There is no void board::spawnTiles()\nThe devs are lazy :p\n";
-
+    int coord1[] = { rand() % 4, rand() % 4 };
+    Tile test1(2, coord1);
 }
 
 void Board::drawBoard()
