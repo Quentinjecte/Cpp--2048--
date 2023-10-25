@@ -24,13 +24,15 @@ Board::Board(int size[])
 Board::~Board()
 {
     std::cout << "BOARD WAS PURGED\n";
+
 }
 
 void Board::spawnTiles()
 {
     std::cout << "There is no void board::spawnTiles()\nThe devs are lazy :p\n";
-    int coord1[] = { rand() % 4, rand() % 4 };
-    Tile test1(2, coord1);
+
+    int coord[] = { 1,1 };
+    Tile tile(2, coord);
 }
 
 void Board::drawBoard()

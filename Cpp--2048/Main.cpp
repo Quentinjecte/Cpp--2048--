@@ -22,7 +22,6 @@ int Rn;
 std::string Rl;
 
 
-
 /*
 void Random(int Rt)
 {
@@ -48,6 +47,7 @@ int main()
     {
         // Values and utilities
         int boardSize[] = { 4, 4 };
+
         Board board(boardSize);
         board.spawnTiles();
 
