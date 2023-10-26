@@ -24,15 +24,40 @@ Board::Board(int size[])
 Board::~Board()
 {
     std::cout << "BOARD WAS PURGED\n";
-
 }
 
 void Board::spawnTiles()
 {
-    std::cout << "There is no void board::spawnTiles()\nThe devs are lazy :p\n";
+    std::cout << "J'ai ouvert la saint christie\n";
 
-    int coord[] = { 1,1 };
-    Tile tile(2, coord);
+    if (St >= 1)
+    {
+        for (int i = 0; i < St; i++)
+        {
+            int coord[] = { 1 + (rand() % 4), 1 + (rand() % 4) };
+            std::cout << "Coord l40\n";
+
+            // Check if the coordinate is empty
+            if ((coord)) {
+                if (rand() % 10 < 7) new Tile(2, coord);
+                else new Tile(4, coord);
+
+                std::cout << St << "<--- Coord l45\n";
+            }
+        }
+        St = 1;
+    }
+    else
+    {
+        int coord[] = { 1 + (rand() % 4), 1 + (rand() % 4) };
+        std::cout << St << "<--- Coord l40\n";
+
+        // Check if the coordinate is empty
+        if (isCoordinateEmpty(coord)) {
+            if (rand() % 10 < 7) new Tile(2, coord);
+            else new Tile(4, coord);
+        }
+    }
 }
 
 void Board::drawBoard()
@@ -99,3 +124,11 @@ void Board::drawBoard()
     }
     std::cout << CBR << "\n";
 }
+
+void Board::moveTiles()
+{
+    for (auto i : Tile::tileList)
+    {
+        std::cout << i << ", " << i->value << ", [" << i->coord[0] << "," << i->coord[1] << "]\n";
+    }
+};

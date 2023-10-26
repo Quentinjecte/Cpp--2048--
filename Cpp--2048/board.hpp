@@ -7,6 +7,7 @@ class Board
 private:
     int width;
     int height;
+    int St = 2;
 
 public:
     Board(int size[]);
@@ -14,5 +15,6 @@ public:
 
     void spawnTiles();
     void drawBoard();
+    void moveTiles();
 };
 

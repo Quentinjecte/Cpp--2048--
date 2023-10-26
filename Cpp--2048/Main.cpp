@@ -7,6 +7,7 @@
 #include "./tile.hpp"
 #include <conio.h>
 #include <ctime>
+#include <time.h>
 #include <cstdlib>
 #include <string>
 
@@ -18,44 +19,31 @@
 #define KEY_X 1
 
 int MaxN = 0;
-int Rn;
-std::string Rl;
-
-
-/*
-void Random(int Rt)
-{
-    std::cout << "moi";
-    Rt = (rand() % 2);
-    if (Rt == 1)
-    {
-        if (MaxN < 2) {
-            Rn = (rand() % 2);
-            if (Rn == 1) Rl = "A";
-            else Rl = "B";
-            MaxN += 1;
-        }
-        else Rl = "--";
-    }
-}
-*/
-
 
 int main()
 {
+    srand(time(NULL));
+
+    int boardSize[] = { 4, 4 };
+
+    Board board(boardSize);
+    std::cout << "try 30 \n";
+
     while (true)
     {
         // Values and utilities
-        int boardSize[] = { 4, 4 };
 
-        Board board(boardSize);
         board.spawnTiles();
+        std::cout << "try 65\n";
 
         Tile::peek();
+        std::cout << "try 68\n";
+
         board.drawBoard();
-
-        std::cout << "Does a action \n\n";
-
+        std::cout << "Does a action \n";
+        board.moveTiles();
+        std::cout << "Try to get the coord\n";
+        
         char key = _getch();
         int value = key;
 
@@ -78,6 +66,11 @@ int main()
             }
             break;
         }
-        return 0;
     }
+
+    for (Tile* T : Tile::tileList) 
+    {
+        delete T;
+    }
+    return 0;
 }

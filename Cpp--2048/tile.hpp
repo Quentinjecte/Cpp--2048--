@@ -10,13 +10,13 @@ private:
     int value;
     int coord[2];
 
-    static std::vector<Tile*> tileList;
 
 public:
     // Constructors & Destructors
     Tile(int value, int coord[]);
     ~Tile();
 
+    static std::vector<Tile*> tileList;
     void doubleValue();
     static void peek();
 
