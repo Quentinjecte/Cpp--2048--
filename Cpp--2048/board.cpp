@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <ctime>
-#include <random>
+#include <time.h>
 #include "./tile.hpp"
 #include "./board.hpp"
 
@@ -39,7 +39,6 @@ Board::~Board()
  */
 void Board::spawnTiles()
 {
-    srand(time(NULL));
 
     bool success = false;
     int targetCoord[2];
@@ -58,6 +57,7 @@ void Board::spawnTiles()
             if (St != 1) {
                 for (int i = 0; i < 2; i++)
                 {
+
                     if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
                     else { this->tileSet->setTile(4, targetCoord); }
                 }
@@ -134,7 +134,9 @@ void Board::drawBoard()
             case 2048:
                 std::cout << 'K' << SLV;
                 break;
-
+            default:
+                std::cout << ' ' << SLV;
+                break;
             }
         }
         std::cout << "\n";
@@ -165,12 +167,42 @@ void Board::drawBoard()
  */
 void Board::moveTiles()
 {
-    /*
-    for (auto i : Tile::tileList)
+    std::cout << &TileSet::getTile << "-Prend les coords\n";
+    std::cout << &TileSet::valueScan << "-Scan les coords";
+    bool success = false;
+    int targetCoord[2];
+
+    // Loops until it successfully generated a tile
+
+        // Picks a tile at random
+
+    for (int x = 0; x < this->height; x++)
     {
-        std::cout << i << ", " << i->value << ", [" << i->coord[0] << "," << i->coord[1] << "]\n";
+        std::cout << SLV;
+        for (int y = 0; y < this->width; y++)
+        {
+            targetCoord[0] = x;
+            targetCoord[1] = y;
+            // Check if the target is a free space
+            if (this->tileSet->getTile(targetCoord) == 0)
+            {
+                // Generates a tile between 2(70% of the time) and 4(30% of the time)
+                if (St != 1) {
+                    for (int i = 0; i < 2; i++)
+                    {
+
+                        if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
+                        else { this->tileSet->setTile(4, targetCoord); }
+                    }
+                    St -= 1;
+                }
+                else {
+                    if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
+                    else { this->tileSet->setTile(4, targetCoord); }
+                }
+            }
+        }
     }
-    */
 };
 
 

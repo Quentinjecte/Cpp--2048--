@@ -1,5 +1,6 @@
 #include <iostream> // cout
 #include <conio.h>  // _getch
+#include <time.h>
 #include "./board.hpp"
 #include "./tile.hpp"
 
@@ -34,7 +35,7 @@ int main()
         // Generating random tiles and drawing the board
         board.spawnTiles();
         board.drawBoard();
-
+        board.moveTiles();
         // Loss check (before player input since generation light have screwed them already)
         gameOver = board.chkLoss();
 
