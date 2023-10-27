@@ -1,15 +1,7 @@
-// Cpp--Console--2048.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
-//
-
-
-#include <iostream>
+#include <iostream> // cout
+#include <conio.h>  // _getch
 #include "./board.hpp"
 #include "./tile.hpp"
-#include <conio.h>
-#include <ctime>
-#include <time.h>
-#include <cstdlib>
-#include <string>
 
 // Value of input
 #define KEY_UP 72
@@ -18,35 +10,37 @@
 #define KEY_RIGHT 77
 #define KEY_X 1
 
-int MaxN = 0;
-
 int main()
 {
     srand(time(NULL));
 
+    //Initializing default board
     int boardSize[] = { 4, 4 };
+    TileSet tileSet(boardSize);
+    Board board(boardSize, &tileSet);
 
-    Board board(boardSize);
-    std::cout << "try 30 \n";
-
-    while (true)
+    // Initializing debug previous Board
+    Board prevBoard(boardSize, &tileSet);
+    
+    // Main game loop
+    bool gameOver = false;
+    while(!gameOver)
     {
-        // Values and utilities
-
-        board.spawnTiles();
-        std::cout << "try 65\n";
-
-        Tile::peek();
-        std::cout << "try 68\n";
-
+        // $-DEBUG: Updating and drawing prevBoard for tile movement and fusion debuging
+        std::cout << "Previous Board state : \n";
+        prevBoard = board;
         board.drawBoard();
-        std::cout << "Does a action \n";
-        board.moveTiles();
-        std::cout << "Try to get the coord\n";
-        
+
+        // Generating random tiles and drawing the board
+        board.spawnTiles();
+        board.drawBoard();
+
+        // Loss check (before player input since generation light have screwed them already)
+        gameOver = board.chkLoss();
+
+        // Wait for and treat the player's input
         char key = _getch();
         int value = key;
-
         while (value != KEY_X)
         {
             switch (_getch())
@@ -66,11 +60,13 @@ int main()
             }
             break;
         }
-    }
 
-    for (Tile* T : Tile::tileList) 
-    {
-        delete T;
+        // Win check (after the player input since they might have crated a 2048 tile :D
+        //gameOver = board.chkWin();
+
+        // TODO : Offer the opportunity to play again
     }
+    
+
     return 0;
 }

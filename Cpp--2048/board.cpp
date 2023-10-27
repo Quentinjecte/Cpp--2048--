@@ -1,6 +1,8 @@
 ﻿#include <iostream>
-#include "Board.hpp"
-#include "Tile.hpp"
+#include <ctime>
+#include <random>
+#include "./tile.hpp"
+#include "./board.hpp"
 
 #define CTL (char)218 // ┌
 #define CTR (char)191 // ┐
@@ -14,98 +16,131 @@
 #define SLH (char)196 // ─
 #define ICR (char)197 // ┼
 
-
-Board::Board(int size[])
+// Constructor
+Board::Board(int size[], TileSet* tileSetPtr)
 {
+    // Seeds for tile generation later ;3
+    srand(time(NULL));
+
     this->width = size[0];
     this->height = size[1];
+    this->tileSet = tileSetPtr;
 }
 
+// Destructor
 Board::~Board()
 {
     std::cout << "BOARD WAS PURGED\n";
 }
 
+/** \brief
+ * Generates a tile in the TileSet at random
+ * If it attempt to generate on a not-empty tile, loops back and tries again
+ */
 void Board::spawnTiles()
 {
-    std::cout << "J'ai ouvert la saint christie\n";
+    srand(time(NULL));
 
-    if (St >= 1)
+    bool success = false;
+    int targetCoord[2];
+
+    // Loops until it successfully generated a tile
+    while (!success)
     {
-        for (int i = 0; i < St; i++)
+        // Picks a tile at random
+        targetCoord[0] = (rand() % width);
+        targetCoord[1] = (rand() % height);
+
+        // Check if the target is a free space
+        if (this->tileSet->getTile(targetCoord) == 0)
         {
-            int coord[] = { 1 + (rand() % 4), 1 + (rand() % 4) };
-            std::cout << "Coord l40\n";
-
-            // Check if the coordinate is empty
-            if ((coord)) {
-                if (rand() % 10 < 7) new Tile(2, coord);
-                else new Tile(4, coord);
-
-                std::cout << St << "<--- Coord l45\n";
+            // Generates a tile between 2(70% of the time) and 4(30% of the time)
+            if (St != 1) {
+                for (int i = 0; i < 2; i++)
+                {
+                    if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
+                    else { this->tileSet->setTile(4, targetCoord); }
+                }
+                St -= 1;
             }
-        }
-        St = 1;
-    }
-    else
-    {
-        int coord[] = { 1 + (rand() % 4), 1 + (rand() % 4) };
-        std::cout << St << "<--- Coord l40\n";
+            else {
+                if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
+                else { this->tileSet->setTile(4, targetCoord); }
+            }
 
-        // Check if the coordinate is empty
-        if (isCoordinateEmpty(coord)) {
-            if (rand() % 10 < 7) new Tile(2, coord);
-            else new Tile(4, coord);
+            success = true;
         }
     }
 }
 
+/** \brief
+ * Board drawing function
+ * Can adapt to any size board
+ * If there is data that would render outside of the board, they will not cause an issue, instead they'll never be read
+ */
 void Board::drawBoard()
 {
     // Drawing top of board
     std::cout << CTL << SLH;
-    for (int w = 0; w < width - 1; w++)
+    for (int w = 0; w < this->width - 1; w++)
     {
         std::cout << IPD << SLH;
     }
     std::cout << CTR << "\n";
 
 
-    bool dataPrinted = false;                                       // Used to stop the while loop after a print for the tile place
-    std::vector<Tile*>::const_iterator it = Tile::tileList.begin(); // Used in the while loop to access but not edit the Tiles' data
-
     // Drawing tiles and spacers
-    for (int h = 0; h < height; h++)
+    int targetCoord[2];
+    for (int x = 0; x < this->height; x++)
     {
         std::cout << SLV;
-        for (int w = 0; w < width; w++)
+        for (int y = 0; y < this->width; y++)
         {
-            while (!dataPrinted && it != Tile::tileList.end()) // Scours the vector for every existing tiles
+            // Updates the targeted tile to show, and associate its value with a letter
+            targetCoord[0] = x;
+            targetCoord[1] = y;
+            switch (this->tileSet->getTile(targetCoord))
             {
-                if ((*it)->coord[0] == h + 1 && (*it)->coord[1] == w + 1) // Check if coordinates of tile matches
-                {
-                    // TODO : Replace with a switch case to print letters instead of values
-                    switch ((*it)->value)
-                    {
-                    case 2:
-                        std::cout << "A" << SLV;
-                        break;
-                    case 4:
-                        std::cout << "B" << SLV;
-                        break;
-                    }
-                    dataPrinted = true;
-                }
-                else { ++it; }
+            case 2:
+                std::cout << 'A' << SLV;
+                break;
+            case 4:
+                std::cout << 'B' << SLV;
+                break;
+            case 8:
+                std::cout << 'C' << SLV;
+                break;
+            case 16:
+                std::cout << 'D' << SLV;
+                break;
+            case 32:
+                std::cout << 'E' << SLV;
+                break;
+            case 64:
+                std::cout << 'F' << SLV;
+                break;
+            case 128:
+                std::cout << 'G' << SLV;
+                break;
+            case 256:
+                std::cout << 'H' << SLV;
+                break;
+            case 512:
+                std::cout << 'I' << SLV;
+                break;
+            case 1024:
+                std::cout << 'J' << SLV;
+                break;
+            case 2048:
+                std::cout << 'K' << SLV;
+                break;
+
             }
-            if (!dataPrinted) { std::cout << ' ' << SLV; } // Prints a blank space if no match was found in the previous while loop
-            it = Tile::tileList.begin();
-            dataPrinted = false;
         }
         std::cout << "\n";
 
         // Drawing spacers
-        if (h < height - 1)
+        if (x < this->height - 1)
         {
             std::cout << IPR << SLH;
             for (int w = 0; w < width - 1; w++)
@@ -118,17 +153,82 @@ void Board::drawBoard()
 
     // Drawing bottom of board
     std::cout << CBL << SLH;
-    for (int w = 0; w < width - 1; w++)
+    for (int w = 0; w < this->width - 1; w++)
     {
         std::cout << IPU << SLH;
     }
     std::cout << CBR << "\n";
 }
 
+/** \brief
+ * Move and Fuse tiles upon input
+ */
 void Board::moveTiles()
 {
+    /*
     for (auto i : Tile::tileList)
     {
         std::cout << i << ", " << i->value << ", [" << i->coord[0] << "," << i->coord[1] << "]\n";
     }
+    */
 };
+
+
+/** \brief
+ * Check condition for losing the game
+ * This function isn't in main() since it needs access to the private data of the Tile class
+ * Board is the friend of Tile
+ *
+ * \return Boolean used in main to update the gameOver variable
+ */
+bool Board::chkLoss()
+{
+    int targetCoord[2];
+    int targetNeighbor[2];
+
+    // Only tests for defeat if the TileSet has no more empty spaces
+    if (this->tileSet->isFull())
+    {
+        // Skirms through every tiles except for the bottom-most row and the left-most col
+        for (int x = 0; x < this->width - 1; x++)
+        {
+            for (int y = 0; y < this->height - 1; y++)
+            {
+                // Updates the targeted tile for the following test
+                targetCoord[0] = x;
+                targetCoord[1] = y;
+
+                // Updates the neighbor tile coordinates for testing
+                targetNeighbor[0] = targetCoord[0];
+                targetNeighbor[0] = +1;
+
+                // Tests both the bottom and left neighbors
+                if (this->tileSet->getTile(targetCoord) == this->tileSet->getTile(targetNeighbor))
+                {
+                    return false;
+                }
+            }
+        }
+    }
+}
+
+/** \brief
+ * Check condition for wining the game
+ * This function isn't in main() since it needs access to the private data of the Tile class
+ * Board is the friend of Tile
+ *
+ * \return Boolean used in main() to update the gameOver variable
+ */
+/*
+bool Board::chkWin()
+{
+    for (Tile* t : Tile::tileList)
+    {
+        if (t->value == 2048)
+        {
+            std::cout << "\nWow you did it ! :D\n\n\n" << std::endl;
+            return true;
+        }
+    }
+}
+*/

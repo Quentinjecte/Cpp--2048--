@@ -1,25 +1,27 @@
 #ifndef TILE_HPP
 #define TILE_HPP
-#endif
 
 #include <vector>
 
-class Tile
+class TileSet
 {
 private:
-    int value;
-    int coord[2];
-
+    std::vector<std::vector<int>> tiles;
 
 public:
     // Constructors & Destructors
-    Tile(int value, int coord[]);
-    ~Tile();
+    TileSet(int size[]);
+    ~TileSet();
 
-    static std::vector<Tile*> tileList;
-    void doubleValue();
-    static void peek();
+    // Getters
+    int getTile(int coord[2]);
 
-    friend class Board;
+    // Setters
+    void setTile(int value, int coord[2]);
+
+    // "Journalists"
+    bool valueScan(int value);
+    bool isFull();
 };
 
+#endif
