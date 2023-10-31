@@ -28,7 +28,7 @@ public:
     ~windows();
 
     void pollEvents();
-    void clear() const;
+    void DrawForm();
 
     inline bool isClosed() const { return _closed; }
 };

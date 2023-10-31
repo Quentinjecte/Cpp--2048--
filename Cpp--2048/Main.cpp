@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     while (!window.isClosed())
     {
         window.pollEvents();
-        window.clear();
+        window.DrawForm();
     }
 
     /*
