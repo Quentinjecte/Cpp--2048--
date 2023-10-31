@@ -1,14 +1,11 @@
-// Cpp--Console--2048.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
-//
-
-
-#include <iostream>
+#include <iostream> // cout
+#include <conio.h>  // _getch
 #include "./board.hpp"
+#include "./windows.hpp"
 #include "./tile.hpp"
-#include <conio.h>
-#include <ctime>
-#include <cstdlib>
-#include <string>
+
+#include <SDL.h>
+#include <stdio.h>
 
 // Value of input
 #define KEY_UP 72
@@ -17,67 +14,87 @@
 #define KEY_RIGHT 77
 #define KEY_X 1
 
-int MaxN = 0;
-int Rn;
-std::string Rl;
-
-
-/*
-void Random(int Rt)
+int main(int argc, char* argv[])
 {
-    std::cout << "moi";
-    Rt = (rand() % 2);
-    if (Rt == 1)
+    // Pop-up windows already
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Salur", "Projet SDL", NULL);
+    // Windows size
+    windows window("SDL K", 1080, 720);
+
+
+    while (!window.isClosed())
     {
-        if (MaxN < 2) {
-            Rn = (rand() % 2);
-            if (Rn == 1) Rl = "A";
-            else Rl = "B";
-            MaxN += 1;
-        }
-        else Rl = "--";
+        window.pollEvents();
+        window.clear();
     }
-}
-*/
 
+    /*
+    //Initializing default board
+    int boardSize[] = { 4, 4 };
+    TileSet tileSet(boardSize);
+    Board board(boardSize, &tileSet);
 
-int main()
-{
-    while (true)
+    // Initializing debug previous Board
+    Board prevBoard(boardSize, &tileSet);
+
+    // Setting up the board
+    board.spawnTiles();
+
+    // Main game loop
+    bool gameOver = false;
+    while (!gameOver)
     {
-        // Values and utilities
-        int boardSize[] = { 4, 4 };
+        // $-DEBUG: Updating and drawing prevBoard for tile movement and fusion debuging
+        std::cout << "Previous Board state : \n";
+        prevBoard = board;
+        prevBoard.drawBoard();
 
-        Board board(boardSize);
+        // Generating random tiles and drawing the board
         board.spawnTiles();
-
-        Tile::peek();
         board.drawBoard();
 
-        std::cout << "Does a action \n\n";
+        // Loss check (before player input since generation light have screwed them already)
+        gameOver = board.chkLoss();
 
+        // Wait for and treat the player's input
         char key = _getch();
         int value = key;
-
         while (value != KEY_X)
         {
             switch (_getch())
             {
             case KEY_DOWN:
                 std::cout << "KeyDown \n\n";
+                tileSet.mfDown();
                 break;
             case KEY_UP:
                 std::cout << "KeyUp \n\n";
+                tileSet.mfUp();
                 break;
             case KEY_LEFT:
                 std::cout << "KeyLeft \n\n";
+                tileSet.mfLeft();
                 break;
             case KEY_RIGHT:
                 std::cout << "KeyRight \n\n";
+                tileSet.mfRight();
                 break;
             }
             break;
         }
-        return 0;
+        //Win check
+        board.chkWin();
+
+        /*
+        * Win check and lose check
+        * Can choise play again or leave
+
+        if (board.chkWin() == true || board.chkLoss() == true)
+        {
+            gameOver = board.Replay();
+        }
     }
+    */
+
+    return 0;
 }
