@@ -16,6 +16,8 @@ windows::~windows()
 {
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_windows);
+    IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
 }
 
@@ -25,11 +27,21 @@ windows::~windows()
  */
 bool windows::init()
 {
+    // Initiates SDL2, SDL2_TTF and SDL2_Image (in PNG mode)
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         std::cerr << "Failed init";
         return 0;
     }
+    if (TTF_Init() == -1) {
+        std::cerr << "TTF_Init() failed: " << TTF_GetError() << std::endl;
+        return 0;
+    }
+    if (IMG_Init(IMG_INIT_PNG) == 0) {
+        std::cerr << "IMG_Init() failed: " << IMG_GetError() << std::endl;
+        return 0;
+    }
+
 
     // Size windows setting
     _windows = SDL_CreateWindow(_title.c_str(),
@@ -82,7 +94,6 @@ void windows::pollEvents()
                 {
                     _x -= 20;
                 }
-                std::cout << "tamer";
                 break;
             case SDLK_RIGHT:
                 while (_x <= _w / 2 - 400)
@@ -120,8 +131,8 @@ void windows::pollEvents()
 // Create a rederer color
 void windows::DrawForm()
 {
-    //SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // Set First background color
-    //SDL_RenderClear(_renderer);
+    SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // Set First background color
+    // SDL_RenderClear(_renderer);
 
     SDL_Rect rect;
     SDL_SetRenderDrawColor(_renderer, 110, 110, 100, 255); // Set Second rectangle color
@@ -129,7 +140,7 @@ void windows::DrawForm()
     rect.h = 700;
     rect.x = (_w / 2) - (rect.w / 2) + _x;
     rect.y = (_h / 2) - (rect.h / 2) + _y;
-    SDL_RenderFillRect(_renderer, &rect); // Draw the rectangle
+    //SDL_RenderFillRect(_renderer, &rect); // Draw the rectangle
 
 
     rect.w = 150;

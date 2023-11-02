@@ -28,8 +28,6 @@ int main(int argc, char* argv[])
     board.spawnTiles();
     board.spawnTiles();
 
-    std::cout << "Hello World!";
-
     // Pop-up windows already
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Salur", "Projet SDL", NULL);
     // Windows size
@@ -38,16 +36,16 @@ int main(int argc, char* argv[])
 
     // $# DEBUG
     // Creating dummy gameObj and trying to show it on screen
-    int dim[] = { 50, 50 };
+    int dim[] = { 200, 200 };
     char label[] = "amogus";
     GameObj testTile(dim, label);
     int tilePos[] = { 0, 3 };
-    testTile.drawTile(window.getRenderer(), 4, tilePos);
 
-   while (!window.isClosed())
+    window.DrawForm();
+    testTile.drawTile(window.getRenderer(), 32, tilePos);
+    while (!window.isClosed())
     {
         window.pollEvents();
-        window.DrawForm();
     }
 
     /*
