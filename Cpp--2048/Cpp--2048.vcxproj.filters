@@ -27,6 +27,12 @@
     <ClCompile Include="tile.cpp">
       <Filter>Class</Filter>
     </ClCompile>
+    <ClCompile Include="windows.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObj.cpp">
+      <Filter>Class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="board.hpp">
@@ -35,5 +41,14 @@
     <ClInclude Include="tile.hpp">
       <Filter>Class</Filter>
     </ClInclude>
+    <ClInclude Include="windows.hpp">
+      <Filter>Class</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObj.hpp">
+      <Filter>Class</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

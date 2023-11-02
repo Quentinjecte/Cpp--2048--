@@ -18,10 +18,11 @@ public:
 
     void spawnTiles();
     void drawBoard();
-    void moveTiles();  // RUINED
+    void moveTiles(char direction); // RUINED
 
-    bool chkLoss(); // RUINED
-    //bool chkWin();  // RUINED
+    bool Replay();
+    bool chkLoss();
+    bool chkWin();
 };
 
 #endif

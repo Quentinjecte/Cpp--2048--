@@ -22,6 +22,12 @@ public:
     // "Journalists"
     bool valueScan(int value);
     bool isFull();
+
+    // Complex data editors
+    void mfUp();
+    void mfDown();
+    void mfLeft();
+    void mfRight();
 };
 
 #endif
