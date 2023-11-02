@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <ctime>
-#include <time.h>
+#include <random>
 #include "./tile.hpp"
 #include "./board.hpp"
 
@@ -54,18 +54,33 @@ void Board::spawnTiles()
         if (this->tileSet->getTile(targetCoord) == 0)
         {
             // Generates a tile between 2(70% of the time) and 4(30% of the time)
-            if (St != 1) {
+            if (St != 1)
+            {
                 for (int i = 0; i < 2; i++)
                 {
+                    srand(time(NULL));
 
-                    if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
-                    else { this->tileSet->setTile(4, targetCoord); }
+                    if (rand() % 100 < 70)
+                    {
+                        this->tileSet->setTile(2, targetCoord);
+                    }
+                    else
+                    {
+                        this->tileSet->setTile(4, targetCoord);
+                    }
                 }
                 St -= 1;
             }
-            else {
-                if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
-                else { this->tileSet->setTile(4, targetCoord); }
+            else
+            {
+                if (rand() % 100 < 70)
+                {
+                    this->tileSet->setTile(2, targetCoord);
+                }
+                else
+                {
+                    this->tileSet->setTile(4, targetCoord);
+                }
             }
 
             success = true;
@@ -78,6 +93,7 @@ void Board::spawnTiles()
  * Can adapt to any size board
  * If there is data that would render outside of the board, they will not cause an issue, instead they'll never be read
  */
+
 void Board::drawBoard()
 {
     // Drawing top of board
@@ -87,7 +103,6 @@ void Board::drawBoard()
         std::cout << IPD << SLH;
     }
     std::cout << CTR << "\n";
-
 
     // Drawing tiles and spacers
     int targetCoord[2];
@@ -163,50 +178,6 @@ void Board::drawBoard()
 }
 
 /** \brief
- * Move and Fuse tiles upon input
- */
-void Board::moveTiles()
-{
-    std::cout << &TileSet::getTile << "-Prend les coords\n";
-    std::cout << &TileSet::valueScan << "-Scan les coords";
-    bool success = false;
-    int targetCoord[2];
-
-    // Loops until it successfully generated a tile
-
-        // Picks a tile at random
-
-    for (int x = 0; x < this->height; x++)
-    {
-        std::cout << SLV;
-        for (int y = 0; y < this->width; y++)
-        {
-            targetCoord[0] = x;
-            targetCoord[1] = y;
-            // Check if the target is a free space
-            if (this->tileSet->getTile(targetCoord) == 0)
-            {
-                // Generates a tile between 2(70% of the time) and 4(30% of the time)
-                if (St != 1) {
-                    for (int i = 0; i < 2; i++)
-                    {
-
-                        if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
-                        else { this->tileSet->setTile(4, targetCoord); }
-                    }
-                    St -= 1;
-                }
-                else {
-                    if (rand() % 100 < 70) { this->tileSet->setTile(2, targetCoord); }
-                    else { this->tileSet->setTile(4, targetCoord); }
-                }
-            }
-        }
-    }
-};
-
-
-/** \brief
  * Check condition for losing the game
  * This function isn't in main() since it needs access to the private data of the Tile class
  * Board is the friend of Tile
@@ -251,16 +222,17 @@ bool Board::chkLoss()
  *
  * \return Boolean used in main() to update the gameOver variable
  */
-/*
 bool Board::chkWin()
 {
-    for (Tile* t : Tile::tileList)
+    if (this->tileSet->valueScan(2048))
     {
-        if (t->value == 2048)
-        {
-            std::cout << "\nWow you did it ! :D\n\n\n" << std::endl;
-            return true;
-        }
+        return true;
     }
 }
-*/
+
+
+/** \brief
+ * Moves and fuses the tiles within the TileSet
+ * Adapts depending on the direction of the input, going through the farther tiles, and moving them line by line towards the "wall"
+ */
+
