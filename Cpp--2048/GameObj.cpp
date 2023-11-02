@@ -58,7 +58,6 @@ GameObj::~GameObj()
 //		SDL_DestroyTexture(textTexture);
 //	}
 //
-//
 //	SDL_RenderFillRect(ARGrenderer, &(this->background));
 //}
 
