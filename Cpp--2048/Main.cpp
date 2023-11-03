@@ -7,7 +7,6 @@
 #include "./gameObj.hpp"
 
 #include "SDL.h"
-#include "SDL_ttf.h"
 
 // Value of input
 #define KEY_UP 72
@@ -30,7 +29,7 @@ int main(int argc, char* argv[])
 
 
     // Creates the GameObj instances
-    std::vector<GameObj> listGameObj = {};
+    std::vector<GameObj*> listGameObj = {};
     int coord[2];
     for (int x = 0;  x < boardSize[0];  x++)
     {
@@ -62,10 +61,11 @@ int main(int argc, char* argv[])
                 coord[0] = x;
                 coord[0] = y;
                 // Iterate through the objects using iterators and call the private dummy function
-                for (std::vector<GameObj>::iterator it = listGameObj.begin(); it != listGameObj.end(); ++it)
+                for (std::vector<GameObj*>::iterator it = listGameObj.begin(); it != listGameObj.end(); ++it)
                 {
-                    it->objUpdater(tileSet.getTile(coord));
-                    it->drawTile(window.getRenderer(), window.getWidth(), window.getHeight());
+                    GameObj* obj = *it;
+                    obj->objUpdater(tileSet.getTile(coord));
+                    obj->drawTile(window.getRenderer(), window.getWindowsW(), window.getWindowsH());
                 }
             }
         }

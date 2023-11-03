@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "./GameObj.hpp"
+#include "SDL_image.h"
 
 std::map<int, SDL_Surface*> GameObj::spriteMap;
 
@@ -66,12 +67,6 @@ void GameObj::drawTile(SDL_Renderer* ARGrenderer, int windowWidth, int windowHei
 		int space = 3; // Adjust this to match the space between cells
 		int startX = (windowWidth - (4 * rectSize + 3 * space)) / 2;
 		int startY = (windowHeight - (4 * rectSize + 3 * space)) / 2;
-
-		SDL_Rect messageRect;
-		messageRect.x = rowOffset;
-		messageRect.y = colOffset;
-		messageRect.w = this->background.w;
-		messageRect.h = this->background.h;
 
 		// Creates and positions the Rect where the tile will be
 		SDL_Rect tileRect;
