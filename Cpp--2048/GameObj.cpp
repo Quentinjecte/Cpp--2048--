@@ -30,53 +30,34 @@ GameObj::~GameObj()
 	std::cout << "GameObj was PURGED";
 }
 
-//// Draw the gameObj at a coordinate
-//void GameObj::drawTile(SDL_Renderer* ARGrenderer, int ARGvalue, int ARGpos[2])
-//{
-//
-//
-//	// Sets the text for the tile (if any)
-//	if (ARGvalue != 0)
-//	{
-//
-//		// Get the dimensions of the text
-//		int textWidth = textSurface->w;
-//		int textHeight = textSurface->h;
-//
-//		// Set the position for the text within the tile
-//		int textX = rowOffset + (background.w - textWidth) / 2;  // Centered horizontally
-//		int textY = colOffset + (background.h - textHeight) / 2; // Centered vertically
-//
-//		// Create a destination rectangle for the text
-//		SDL_Rect textDestRect = { textX, textY, textWidth, textHeight };
-//
-//		// Render the text to the renderer
-//		SDL_RenderCopy(ARGrenderer, textTexture, nullptr, &textDestRect);
-//
-//		// Clean up the surface and texture
-//		SDL_FreeSurface(textSurface);
-//		SDL_DestroyTexture(textTexture);
-//	}
-//
-//	SDL_RenderFillRect(ARGrenderer, &(this->background));
-//}
-
-
 // Draw the gameObj at a coordinate
 void GameObj::drawTile(SDL_Renderer* ARGrenderer, int ARGvalue, int ARGpos[2])
 {
-	// Offset values to draw the rect at the right place
-	int rowOffset = _windows.getWindowsX() + ARGpos[0] * 155;
-	int colOffset = _windows.getWindowsY() + ARGpos[1] * 155;
-
 	SDL_Rect rect = _windows.getRect();
+	int cellSize = 150;
+	int cellSpacing = 5;
+	int totalWidth = 4 * cellSize + 3 * cellSpacing;
+	int totalHeight = 4 * cellSize + 3 * cellSpacing;
 
-	// Calculate the position to center the rectangle
-	int centerX = rowOffset + (155 - rect.w) / 2;
-	int centerY = colOffset + (155 - rect.h) / 2;
+	int row = _windows.getWindowsR();
+	int col = _windows.getWindowsC();
+
+	std::cout << col << " GO \n";
+
+	int startX = _windows.getWindowsX() + (_windows.getWindowsW() - totalWidth) / 2;
+	int startY = _windows.getWindowsY() + (_windows.getWindowsH() - totalHeight) / 2;
+
+	int centerX = startX + row * (cellSize + cellSpacing) + cellSize / 2;
+	int centerY = startY + col * (cellSize + cellSpacing) + cellSize / 2;
 
 	this->background.x = centerX;
 	this->background.y = centerY;
+
+
+    rect.w = 150;
+    rect.h = 150;
+    rect.x = centerX - rect.w / 2;
+    rect.y = centerY - rect.h / 2;
 
 	// Sets the color of the background
 	SDL_Color tileColor = this->colorMap.at(ARGvalue);
@@ -87,53 +68,3 @@ void GameObj::drawTile(SDL_Renderer* ARGrenderer, int ARGvalue, int ARGpos[2])
 	SDL_RenderFillRect(ARGrenderer, &(this->background));
 	SDL_RenderPresent(ARGrenderer); // Update the renderer
 }
-
-
-//// ChatGPT generated drawTile()
-//void GameObj::drawTile(SDL_Renderer* ARGrenderer, int ARGvalue, int ARGpos[2])
-//{
-//	if (TTFArial == nullptr) {
-//		std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
-//		return;
-//	}
-//
-//	std::cout << "Start Error : " << SDL_GetError() << "\n";
-//
-//	// Offset values to draw the rect at the right place
-//	int rowOffset = 0 + ARGpos[0] * 5;
-//	int colOffset = 0 + ARGpos[1] * 5;
-//	this->background.x = rowOffset;
-//	this->background.y = colOffset;
-//
-//	// Sets the color of the background and renders it
-//	SDL_Color tileColor = this->colorMap.at(ARGvalue);
-//	SDL_SetRenderDrawColor(ARGrenderer, tileColor.r, tileColor.g, tileColor.b, 255);
-//	//SDL_RenderFillRect(ARGrenderer, &(this->background));
-//
-//	// Sets the text for the tile (if any)
-//	if (ARGvalue != 0)
-//	{
-//		// Creates Surface and Texture to render the text
-//		SDL_Surface* surfaceMessage = TTF_RenderText_Solid(this->TTFArial, this->label, { 255, 255, 255 });
-//		std::cout << "Surf Error : " << SDL_GetError() << "\n";
-//		SDL_Texture* textureMessage = SDL_CreateTextureFromSurface(ARGrenderer, surfaceMessage);
-//		std::cout << "Texture Error : " << SDL_GetError() << "\n";
-//
-//		SDL_Rect messageRect;
-//		messageRect.x = rowOffset;
-//		messageRect.y = colOffset;
-//		messageRect.w = this->background.w;
-//		messageRect.h = this->background.h;
-//
-//		SDL_QueryTexture(textureMessage, NULL, NULL, &messageRect.w, &messageRect.h);
-//		std::cout << "Query Error : " << SDL_GetError() << "\n";
-//		SDL_RenderCopy(ARGrenderer, textureMessage, NULL, &messageRect);
-//		std::cout << "Render Error : " << SDL_GetError() << "\n";
-//		SDL_DestroyTexture(textureMessage);
-//		std::cout << "Destroy Error : " << SDL_GetError() << "\n";
-//		SDL_FreeSurface(surfaceMessage);
-//		std::cout << "Free Error : " << SDL_GetError() << "\n";
-//
-//	}
-//
-//}

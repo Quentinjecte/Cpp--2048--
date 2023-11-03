@@ -36,14 +36,16 @@ int main(int argc, char* argv[])
 
     // $# DEBUG
     // Creating dummy gameObj and trying to show it on screen
-    int dim[] = { 125, 125 };
+    int dim[] = { 150, 150 };
     char label[] = "amogus";
     GameObj testTile(dim, label);
     int tilePos[] = { 0, 3 };
 
     window.DrawForm();
-    while (!window.isClosed())
-    {
+
+    bool gameOver = false;
+
+    while (!gameOver) {
         window.pollEvents();
         testTile.drawTile(window.getRenderer(), 32, tilePos);
     }
