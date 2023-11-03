@@ -43,4 +43,8 @@ public:
 
     // Getters
     SDL_Renderer* getRenderer();
+    int getWidth();
+    int getHeight();
+
+    friend class GameObj;
 };

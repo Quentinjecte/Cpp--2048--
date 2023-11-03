@@ -1,5 +1,6 @@
 #include <iostream> // cout
 #include <conio.h>  // _getch
+#include <vector>
 #include "./board.hpp"
 #include "./windows.hpp"
 #include "./tile.hpp"
@@ -22,39 +23,48 @@ int main(int argc, char* argv[])
     TileSet tileSet(boardSize);
     Board board(boardSize, &tileSet);
 
-    // Setting up the board
-    board.spawnTiles();
-    board.spawnTiles();
-    board.spawnTiles();
-    board.spawnTiles();
-
     // Pop-up windows already
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Salur", "Projet SDL", NULL);
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Salut", "Projet SDL", NULL);
     // Windows size
-    windows window("SDL K", 1920, 1080);
+    windows window("2048", 1920, 1080);
 
 
-    // $# DEBUG
-    // Creating dummy gameObj and trying to show it on screen
-    int dim[] = { 125, 125 };
-    char label[] = "amogus";
-    GameObj testTile(dim, label);
-    int tilePos[] = { 0, 3 };
-
-    window.DrawForm();
-    while (!window.isClosed())
+    // Creates the GameObj instances
+    std::vector<GameObj> listGameObj = {};
+    int coord[2];
+    for (int x = 0;  x < boardSize[0];  x++)
     {
-        window.pollEvents();
-        testTile.drawTile(window.getRenderer(), 32, tilePos);
+        for (int y = 0;  y < boardSize[1];  y++)
+        {
+            coord[0] = x;
+            coord[1] = y;
+            GameObj* obj = new GameObj(tileSet.getTile(coord), coord);
+            listGameObj.push_back(obj);
+        }
     }
 
-    /*
     // Main game loop
+    board.spawnTiles();
     bool gameOver = false;
     while (!gameOver)
     {
         // Generating random tiles and drawing the board
         board.spawnTiles();
+        // Updates every GameObj loaded in memory, and display them
+        for (int x = 0; x < boardSize[0]; x++)
+        {
+            for (int y = 0; y < boardSize[1]; y++)
+            {
+                coord[0] = x;
+                coord[0] = y;
+                // Iterate through the objects using iterators and call the private dummy function
+                for (std::vector<GameObj>::iterator it = listGameObj.begin(); it != listGameObj.end(); ++it)
+                {
+                    it->objUpdater(tileSet.getTile(coord));
+                    it->drawTile(window.getRenderer(), window.getWidth(), window.getHeight());
+                }
+            }
+        }
         board.drawBoard();
 
         // Loss check (before player input since generation light have screwed them already)

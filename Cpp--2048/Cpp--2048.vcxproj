@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Askeladd\Downloads\SDL2_ttf-devel-2.20.2-VC\SDL2_ttf-2.20.2\include;C:\Users\Askeladd\Downloads\SDL2_image-devel-2.6.3-VC\SDL2_image-2.6.3\include;C:\Users\Askeladd\Desktop\CODE\GAMING CAMPUS\SDL\SDL2-2.28.4\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Askeladd\Downloads\SDL2_image-devel-2.6.3-VC\SDL2_image-2.6.3\lib\x64;C:\Users\Askeladd\Downloads\SDL2_ttf-devel-2.20.2-VC\SDL2_ttf-2.20.2\lib\x64;C:\Users\Askeladd\Desktop\CODE\GAMING CAMPUS\SDL\SDL2-2.28.4\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\BAPTISTE\Documents\Libraries\C++\SDL2_ttf VC\include;C:\Users\BAPTISTE\Documents\Libraries\C++\SDL2_mixer VC\include;C:\Users\BAPTISTE\Documents\Libraries\C++\SDL2_image VC\include;C:\Users\BAPTISTE\Documents\Libraries\C++\SDL2 VC\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\BAPTISTE\Documents\Libraries\C++\SDL2_ttf VC\lib\x64;C:\Users\BAPTISTE\Documents\Libraries\C++\SDL2_mixer VC\lib\x64;C:\Users\BAPTISTE\Documents\Libraries\C++\SDL2_image VC\lib\x64;C:\Users\BAPTISTE\Documents\Libraries\C++\SDL2 VC\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

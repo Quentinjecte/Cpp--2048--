@@ -87,7 +87,7 @@ bool windows::init()
 
 }
 
-// For don't crash
+// Window events handler
 void windows::pollEvents()
 {
     SDL_Event event;
@@ -195,6 +195,11 @@ SDL_Renderer* windows::getRenderer()
 {
     return this->_renderer;
 }
-/*
- *
- */
+int windows::getWidth()
+{
+    return this->_w;
+}
+int windows::getHeight()
+{
+    return this->_h;
+}

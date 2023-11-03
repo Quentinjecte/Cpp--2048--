@@ -3,7 +3,6 @@
 
 #include <map>
 #include "SDL.h"
-#include "SDL_ttf.h"
 #include "./windows.hpp"
 
 class GameObj
@@ -11,22 +10,26 @@ class GameObj
 private:
 	windows _windows; // Constructeur de windows
 
-	// Font used for every Tiles of 2048
-	static TTF_Font* TTFArial;
-
-	// Colors used for the tiles background of 2048
-	static std::map<int, SDL_Color> colorMap;
+	// Sprites used for the tiles of 2048
+	static std::map<int, SDL_Surface*> spriteMap;
 
 	// Attributes
-	char* label;
-	SDL_Rect background;
+	int tileValue;
+	int tilePos[2];
+
+	// Surface loading stuff
+	void loadSurfaces();
+	void freeSurfaces();
 
 public:
 	// Constru & Destru
-	GameObj(int ARGdim[2], char* ARGlabel);
+	GameObj(int ARGvalue, int ARGpos[2]);
 	~GameObj();
 
+	// Updater
+	void objUpdater(int ARGvalue);
+
 	// Methods to manipulate object
-	void drawTile(SDL_Renderer* ARGrenderer, int ARGvalue, int ARGpos[2]);
+	void drawTile(SDL_Renderer* ARGrenderer, int windowWidth, int windowHeight);
 };
 #endif
