@@ -20,6 +20,7 @@ public:
     void drawBoard();
     void moveTiles(char direction); // RUINED
 
+    bool Replay();
     bool chkLoss();
     bool chkWin();
 };

@@ -17,7 +17,8 @@ windows::~windows()
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_windows);
     IMG_Quit();
-    TTF_Quit();
+    Mix_FreeMusic(music);
+    Mix_CloseAudio();
     SDL_Quit();
 }
 
@@ -33,17 +34,35 @@ bool windows::init()
         std::cerr << "Failed init";
         return 0;
     }
-    if (TTF_Init() == -1) {
-        std::cerr << "TTF_Init() failed: " << TTF_GetError() << std::endl;
-        return 0;
-    }
+
     if (IMG_Init(IMG_INIT_PNG) == 0) {
         std::cerr << "IMG_Init() failed: " << IMG_GetError() << std::endl;
         return 0;
     }
 
+    if (backgroundSurface == nullptr) {
+        std::cerr << "Failed to load background image: " << IMG_GetError() << std::endl;
+        // Error setting
+    }
 
-    // Size windows setting
+    //Music setting information
+    if (Mix_Init(MIX_INIT_MP3) < 0) {
+        std::cerr << "Failed to initialize SDL Mixer: " << Mix_GetError() << std::endl;
+        return 0;
+    }
+
+    //Hz, type audio, size
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "Failed to open audio: " << Mix_GetError() << std::endl;
+        return 0;
+    }
+
+    music = Mix_LoadMUS("Song.mp3");
+
+    Mix_PlayMusic(music, -1); // Loop
+
+
+    // Size windows setting information
     _windows = SDL_CreateWindow(_title.c_str(),
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
@@ -74,7 +93,7 @@ bool windows::init()
 
 }
 
-// For don't crash
+// Window events handler
 void windows::pollEvents()
 {
     SDL_Event event;
@@ -132,19 +151,26 @@ void windows::pollEvents()
 void windows::DrawForm()
 {
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255); // Set First background color
-    // SDL_RenderClear(_renderer);
+    SDL_RenderClear(_renderer);
 
-    SDL_Rect rect;
-    SDL_SetRenderDrawColor(_renderer, 110, 110, 100, 255); // Set Second rectangle color
-    rect.w = 700;
-    rect.h = 700;
-    rect.x = (_w / 2) - (rect.w / 2) + _x;
-    rect.y = (_h / 2) - (rect.h / 2) + _y;
-    //SDL_RenderFillRect(_renderer, &rect); // Draw the rectangle
+    // Background img
+    backgroundSurface = IMG_Load("Plage.jpg");
+
+    backgroundTexture = SDL_CreateTextureFromSurface(_renderer, backgroundSurface);
+
+    SDL_SetTextureColorMod(backgroundTexture, 128, 128, 128); // Low light
+    // Dessinez la texture du fond sur toute la fenêtre
+    SDL_RenderCopy(_renderer, backgroundTexture, nullptr, nullptr);
+    SDL_DestroyTexture(backgroundTexture);
+    SDL_FreeSurface(backgroundSurface);
 
 
+    // Draw Table
     rect.w = 150;
     rect.h = 150;
+
+    int startX = (_w - (4 * rect.w + 3 * Space)) / 2; // Space 
+    int startY = (_h - (4 * rect.h + 3 * Space)) / 2;
 
     for (int i = 0; i < 4; i++)
     {
@@ -153,12 +179,18 @@ void windows::DrawForm()
         {
 
             // Calculate the position of the current rectangle
-            rect.x = (int)((i * 175) + ((_w / 2) - (rect.w * 2.25))) + _x;
-            rect.y = (int)((j * 175) + ((_h / 2) - (rect.h * 2.25))) + _y;
+            rect.x = startX + i * (rect.w + Space); // Position x 
+            rect.y = startY + j * (rect.h + Space); // Position y 
+
+            std::cout << rect.x << "\n";
+            std::cout << rect.y << "\n";
+
 
             SDL_RenderFillRect(_renderer, &rect); // Draw the rectangle
         }
     }
+    _x = rect.x;
+    _y = rect.y;
     SDL_RenderPresent(_renderer); // Update the renderer
 }
 

@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <ctime>
 #include <random>
+#include <string>
 #include "./tile.hpp"
 #include "./board.hpp"
 
@@ -200,16 +201,7 @@ bool Board::chkLoss()
                 // Updates the targeted tile for the following test
                 targetCoord[0] = x;
                 targetCoord[1] = y;
-
-                // Updates the neighbor tile coordinates for testing
-                targetNeighbor[0] = targetCoord[0];
-                targetNeighbor[0] = +1;
-
-                // Tests both the bottom and left neighbors
-                if (this->tileSet->getTile(targetCoord) == this->tileSet->getTile(targetNeighbor))
-                {
-                    return false;
-                }
+                return true;
             }
         }
     }
@@ -220,16 +212,40 @@ bool Board::chkLoss()
  * This function isn't in main() since it needs access to the private data of the Tile class
  * Board is the friend of Tile
  *
- * \return Boolean used in main() to update the gameOver variable
+ * \return Boolean Replay.
  */
 bool Board::chkWin()
 {
     if (this->tileSet->valueScan(2048))
     {
+        std::cout << "GG tu a gagne \n";
+
         return true;
     }
 }
 
+
+/*
+*Write a value 
+* Return Boolen according to our choice
+* End the game or start a new session
+*/
+bool Board::Replay() {
+
+    std::string Rj;
+    std::cout << "Voulez-vous rejouer O/N : ";
+    std::cin >> Rj;
+
+    if (Rj == "O" || Rj == "o")
+    {
+        return false;
+    }
+    else {
+        std::cout << "\n\n A la prochaine \n\n";
+        return true;
+    }
+
+}
 
 /** \brief
  * Moves and fuses the tiles within the TileSet
